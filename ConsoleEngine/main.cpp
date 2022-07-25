@@ -14,6 +14,7 @@ public:
 		for (uint32_t y = 0u; y < GetHeight(); y++)
 			for (uint32_t x = 0u; x < GetWidth(); x++)
 				PutPixel({ x, y }, pAul::HALF, rand() % 0xF0);
+
 		return true;
 	}
 

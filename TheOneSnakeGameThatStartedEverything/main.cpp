@@ -68,13 +68,13 @@ public:
 			}
 			bool CanMove(std::vector<Tale>& tale)
 			{
-				int nextX = m_cell.x + m_x; 
+				int nextX = m_cell.x + m_x;
 				int nextY = m_cell.y + m_y;
 
 				if (nextX < 0 && nextX >= gc_boardWidth &&
-					 nextY < 0 && nextY >= gc_boardHeight)
+					nextY < 0 && nextY >= gc_boardHeight)
 					return false;
-				
+
 				Cell next = { (uint32_t)nextX, (uint32_t)nextY };
 				for (auto& segment : tale)
 				{
@@ -88,7 +88,7 @@ public:
 			{
 				board[m_cell.x][m_cell.y] = c;
 			}
-			
+
 		private:
 			int m_x = 0;
 			int m_y = -1;

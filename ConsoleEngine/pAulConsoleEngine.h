@@ -133,7 +133,6 @@ namespace pAul {
 			}
 		}
 
-	protected:
 		virtual bool OnUserCreate() = 0;
 		virtual bool OnUserUpdate(float fElapsedTime) = 0;
 		virtual void OnUserDestroy() {};
@@ -148,13 +147,25 @@ namespace pAul {
 			return m_height;
 		}
 
-		void PutPixel(Pos pos, wchar_t c = 0, uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
+		void Clear() noexcept
+		{
+			FillRect({ 0, 0 }, { m_width - 1, m_height - 1 }, m_clearChar, m_clearInfo);
+		}
+
+		void Clear(wchar_t c = 0, const uint16_t info = Color::BG_BLACK) noexcept
+		{
+			m_clearChar = c;
+			m_clearInfo = info;
+			FillRect({ 0, 0 }, { m_width - 1, m_height - 1 }, m_clearChar, m_clearInfo);
+		}
+
+		void PutPixel(Pos pos, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
 		{
 			GetChar(pos).Char.UnicodeChar = c;
 			GetChar(pos).Attributes = info;
 		}
 
-		void FillRect(Pos pos1, Pos pos2, wchar_t c = 0, uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
+		void FillRect(Pos pos1, Pos pos2, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
 		{
 			if (!IsInSide(pos1) && IsInSide(pos2))
 				return;
@@ -167,6 +178,37 @@ namespace pAul {
 			for (uint32_t y = pos1.y; y <= pos2.y; y++)
 				for (uint32_t x = pos1.x; x <= pos2.x; x++)
 					PutPixel({ x, y }, c, info);
+		}
+
+		void DrawArray(Pos upperLeft, const uint16_t* arr, int width, int height)
+		{
+			for (uint32_t y = upperLeft.y, i = 0; y <= upperLeft.y + height - 1; y++)
+			{
+				for (uint32_t x = upperLeft.x; x <= upperLeft.x + width - 1; x++, i++)
+				{
+					PutPixel({ x, y }, 0, arr[i]);
+				}
+			}
+		}
+		void DrawArray(Pos upperLeft, const wchar_t* arr, int width, int height)
+		{
+			for (uint32_t y = upperLeft.y, i = 0; y <= upperLeft.y + height - 1; y++)
+			{
+				for (uint32_t x = upperLeft.x; x <= upperLeft.x + width - 1; x++, i++)
+				{
+					PutPixel({ x, y }, arr[i]);
+				}
+			}
+		}
+		void DrawArray(Pos upperLeft, const wchar_t* arrChar, const uint16_t* arrInfo, int width, int height)
+		{
+			for (uint32_t y = upperLeft.y, i = 0; y <= upperLeft.y + height - 1; y++)
+			{
+				for (uint32_t x = upperLeft.x ; x <= upperLeft.x + width - 1; x++, i++)
+				{
+					PutPixel({ x, y }, arrChar[i], arrInfo[i]);
+				}
+			}
 		}
 
 	private:
@@ -191,6 +233,8 @@ namespace pAul {
 		int16_t m_pixelHeight = 0u;
 
 		bool m_bRunning = true;
+		wchar_t m_clearChar = 0;
+		uint16_t m_clearInfo = Color::BG_BLACK;
 
 		CHAR_INFO* m_pScreenBuff = nullptr;
 		HANDLE m_hConsole = 0;
