@@ -180,6 +180,11 @@ namespace pAul {
 					PutPixel({ x, y }, c, info);
 		}
 
+		void FillRect(Pos pos1, int width, int height, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
+		{
+			FillRect(pos1, { pos1.x + width, pos1.y + height }, c, info);
+		}
+
 		void DrawArray(Pos upperLeft, const uint16_t* arr, int width, int height)
 		{
 			for (uint32_t y = upperLeft.y, i = 0; y <= upperLeft.y + height - 1; y++)

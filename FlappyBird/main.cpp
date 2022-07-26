@@ -66,7 +66,7 @@ public:
 
 			if (m_pPipes.back()->m_x == (uint32_t)(m_app.GetWidth() / 2u))
 			{
-				std::uniform_int_distribution<uint32_t> hDir(6u, 30u);
+				std::uniform_int_distribution<uint32_t> hDir(9u, 40u);
 				uint32_t height = hDir(m_rng);
 				std::uniform_int_distribution<uint32_t> nDir(1u, m_app.GetHeight() - height);
 				m_pPipes.push_back(std::make_unique<Pipe>(m_app.GetWidth() - std::size(Pipe::sc_midSection), nDir(m_rng), height));
@@ -90,19 +90,77 @@ public:
 		std::mt19937 m_rng;
 	};
 
+	class Bird
+	{
+	public:
+		Bird(uint32_t t_x, uint32_t t_y) :
+			m_x(t_x), m_y(t_y)
+		{}
+
+		void Jump()
+		{
+			if (m_bCan)
+			{
+				m_dY -= 4;
+				m_bCan = false;
+			}
+		}
+
+		void Move()
+		{
+			m_y += (uint32_t)m_dY;
+			if (m_dY < 3)
+				m_dY += 1;
+			m_bCan = true;
+		}
+
+		void Draw(FlappyBird& app)
+		{
+			app.DrawArray({ m_x, m_y }, sc_bird, sc_width, sc_height);
+		}
+
+		bool Hit(uint32_t pipeGapTopLeftY, uint32_t pipeGapHeight, uint32_t pipePosX, uint32_t pipeWidth)
+		{
+			
+		}
+
+	private:
+		static constexpr uint16_t sc_bird[49] = {
+			pAul::Color::BG_AQUA, pAul::Color::BG_AQUA, pAul::Color::BG_BLACK, pAul::Color::BG_BLACK, pAul::Color::BG_BLACK, pAul::Color::BG_AQUA, pAul::Color::BG_AQUA,
+			pAul::Color::BG_AQUA, pAul::Color::BG_BLACK, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_BLACK, pAul::Color::BG_AQUA,
+			pAul::Color::BG_BLACK, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_BRIGHT_WHITE, pAul::Color::BG_BLACK, pAul::Color::BG_YELLOW, pAul::Color::BG_BLACK,
+			pAul::Color::BG_BLACK, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_BLACK,
+			pAul::Color::BG_BLACK, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_RED, pAul::Color::BG_RED, pAul::Color::BG_RED, pAul::Color::BG_RED,
+			pAul::Color::BG_AQUA, pAul::Color::BG_BLACK, pAul::Color::BG_YELLOW, pAul::Color::BG_YELLOW, pAul::Color::BG_RED, pAul::Color::BG_RED, pAul::Color::BG_RED,
+			pAul::Color::BG_AQUA, pAul::Color::BG_AQUA, pAul::Color::BG_BLACK, pAul::Color::BG_BLACK, pAul::Color::BG_BLACK, pAul::Color::BG_AQUA, pAul::Color::BG_AQUA
+		};
+		static constexpr uint32_t sc_width = 7u;
+		static constexpr uint32_t sc_height = 7u;
+
+		uint32_t m_x;
+		uint32_t m_y;
+		int m_dY = 0;
+		bool m_bCan = true;
+	};
+
 public:
 	bool OnUserCreate() override
 	{
 		Clear(0, pAul::Color::BG_AQUA);
 		m_pPipeManager = std::make_unique<PipeManager>(*this);
+		m_pBird = std::make_unique<Bird>((uint32_t)(GetWidth() / 3), (uint32_t)(GetHeight() / 2));
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		if (GetKeyState(VK_SPACE) & 0x8000)
+			m_pBird->Jump();
+
 		if (m_fTimer <= 0.0f)
 		{
 			m_pPipeManager->MovePipes();
+			m_pBird->Move();
 
 			m_fTimer = sc_fMoveTimerTimer;
 		} else
@@ -110,6 +168,7 @@ public:
 
 		Clear(0, pAul::Color::BG_AQUA);
 		m_pPipeManager->Draw();
+		m_pBird->Draw(*this);
 
 		return true;
 	}
@@ -119,6 +178,7 @@ private:
 	float m_fTimer = sc_fMoveTimerTimer;
 
 	std::unique_ptr<PipeManager> m_pPipeManager;
+	std::unique_ptr<Bird> m_pBird;
 };
 
 int main()
