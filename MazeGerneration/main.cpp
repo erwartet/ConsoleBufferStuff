@@ -15,11 +15,6 @@ public:
 		Cell* next;
 	};
 
-	enum class Direction
-	{
-		NORTH, EAST, SOUTH, WEST
-	};
-
 	bool AlreadyInStack(int x, int y)
 	{
 		const int in = y * m_boardWidth + x;
