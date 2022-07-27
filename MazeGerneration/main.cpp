@@ -122,15 +122,9 @@ public:
 	}
 
 public:
-	bool OnUserCreate() override
+	void Build()
 	{
-		m_boardWidth = GetWidth() / (mc_cellSize + mc_gutterWidth);
-		m_boardHeight = GetHeight() / (mc_cellSize + mc_gutterWidth);
-
-		for (int y = 0; y < m_boardHeight; y++)
-			for (int x = 0; x < m_boardWidth; x++)
-				m_board.push_back({ x, y, nullptr });
-
+		Clear();
 		for (uint32_t y = 0; y < m_boardHeight; y++)
 			for (uint32_t x = 0; x < m_boardWidth; x++)
 				FillRect({ TranslateCoord(x, true), TranslateCoord(y, false) }, mc_cellSize - 1, mc_cellSize - 1, 0, pAul::Color::BG_BLUE);
@@ -142,6 +136,18 @@ public:
 			PutPixel({ i, 0 }, 0, pAul::Color::BG_BRIGHT_WHITE);
 		for (uint32_t i = GetWidth() - 2; i >= GetWidth() - 5; i--)
 			PutPixel({ i, GetHeight() - 1u }, 0, pAul::Color::BG_BRIGHT_WHITE);
+	}
+
+	bool OnUserCreate() override
+	{
+		m_boardWidth = GetWidth() / (mc_cellSize + mc_gutterWidth);
+		m_boardHeight = GetHeight() / (mc_cellSize + mc_gutterWidth);
+
+		for (int y = 0; y < m_boardHeight; y++)
+			for (int x = 0; x < m_boardWidth; x++)
+				m_board.push_back({ x, y, nullptr });
+
+		Build();
 
 		return true;
 	}
@@ -156,6 +162,12 @@ public:
 			} else
 				m_timer = sc_waitTime;
 			m_timer -= fElapsedTime;
+		}
+
+		if (GetKeyState(VK_BACK) & 0x8000)
+		{
+			m_alreadyTaken.clear();
+			Build();
 		}
 		return true;
 	}

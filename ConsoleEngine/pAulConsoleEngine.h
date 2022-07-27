@@ -147,7 +147,7 @@ namespace pAul {
 			return m_height;
 		}
 
-		void Clear() noexcept
+		void AutoClear() noexcept
 		{
 			FillRect({ 0, 0 }, { m_width - 1, m_height - 1 }, m_clearChar, m_clearInfo);
 		}
