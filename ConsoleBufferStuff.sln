@@ -25,6 +25,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TypesOfInput", "TypesOfInpu
 		{F1C7725B-3BB5-45F0-A933-735D966B7193} = {F1C7725B-3BB5-45F0-A933-735D966B7193}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JCsGameOfLife", "JCsGameOfLife\JCsGameOfLife.vcxproj", "{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F1C7725B-3BB5-45F0-A933-735D966B7193} = {F1C7725B-3BB5-45F0-A933-735D966B7193}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -73,6 +78,14 @@ Global
 		{C5C074E5-706D-4ECC-9146-D2AB982E49F2}.Release|x64.Build.0 = Release|x64
 		{C5C074E5-706D-4ECC-9146-D2AB982E49F2}.Release|x86.ActiveCfg = Release|Win32
 		{C5C074E5-706D-4ECC-9146-D2AB982E49F2}.Release|x86.Build.0 = Release|Win32
+		{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}.Debug|x64.ActiveCfg = Debug|x64
+		{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}.Debug|x64.Build.0 = Debug|x64
+		{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}.Debug|x86.ActiveCfg = Debug|Win32
+		{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}.Debug|x86.Build.0 = Debug|Win32
+		{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}.Release|x64.ActiveCfg = Release|x64
+		{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}.Release|x64.Build.0 = Release|x64
+		{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}.Release|x86.ActiveCfg = Release|Win32
+		{EDCF07EA-0BB0-4086-8CE7-6013BA37ABE1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
