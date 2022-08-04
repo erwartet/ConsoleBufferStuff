@@ -11,10 +11,7 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		for (uint32_t y = 0u; y < GetHeight(); y++)
-			for (uint32_t x = 0u; x < GetWidth(); x++)
-				PutPixel({ x, y }, pAul::HALF, rand() % 0xF0);
-
+		DrawRect({ 10u, 10u }, { 50u, 50u });
 		return true;
 	}
 
@@ -25,7 +22,7 @@ private:
 int main()
 {
 	Sample sample;
-	sample.Construct(L"Sample", 80u, 80u, 8, 8);
+	sample.Construct(L"Sample", 160u, 160u, 4, 4);
 	sample.Run();
 	return 0;
 }

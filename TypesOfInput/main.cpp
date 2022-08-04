@@ -46,6 +46,16 @@ public:
 				m_dx = 0.0f;
 		}
 	};
+	
+	class Mouse :
+		public Controller
+	{
+	public:
+		void Update() noexcept override
+		{
+			
+		}
+	};
 
 	class Player
 	{

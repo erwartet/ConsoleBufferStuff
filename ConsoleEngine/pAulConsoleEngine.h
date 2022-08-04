@@ -165,26 +165,6 @@ namespace pAul {
 			GetChar(pos).Attributes = info;
 		}
 
-		void FillRect(Pos pos1, Pos pos2, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
-		{
-			if (!IsInSide(pos1) && IsInSide(pos2))
-				return;
-
-			if (pos1.x > pos2.x)
-				std::swap(pos1.x, pos2.x);
-			if (pos1.y > pos2.y)
-				std::swap(pos1.y, pos2.y);
-
-			for (uint32_t y = pos1.y; y <= pos2.y; y++)
-				for (uint32_t x = pos1.x; x <= pos2.x; x++)
-					PutPixel({ x, y }, c, info);
-		}
-
-		void FillRect(Pos pos1, int width, int height, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
-		{
-			FillRect(pos1, { pos1.x + width, pos1.y + height }, c, info);
-		}
-
 		void DrawArray(Pos upperLeft, const uint16_t* arr, int width, int height)
 		{
 			for (uint32_t y = upperLeft.y, i = 0; y <= upperLeft.y + height - 1; y++)
@@ -209,11 +189,53 @@ namespace pAul {
 		{
 			for (uint32_t y = upperLeft.y, i = 0; y <= upperLeft.y + height - 1; y++)
 			{
-				for (uint32_t x = upperLeft.x ; x <= upperLeft.x + width - 1; x++, i++)
+				for (uint32_t x = upperLeft.x; x <= upperLeft.x + width - 1; x++, i++)
 				{
 					PutPixel({ x, y }, arrChar[i], arrInfo[i]);
 				}
 			}
+		}
+
+
+
+		void DrawLine(Pos pos1, Pos pos2, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
+		{
+			
+		}
+
+		void DrawRect(Pos pos1, Pos pos2, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
+		{
+			if (!IsInSide(pos1) && IsInSide(pos2))
+				return;
+
+			if (pos1.x > pos2.x)
+				std::swap(pos1.x, pos2.x);
+			if (pos1.y > pos2.y)
+				std::swap(pos1.y, pos2.y);
+
+			DrawLine(pos1, { pos2.x, pos1.y }, c, info);
+			DrawLine({ pos2.x, pos1.y }, pos2, c, info);
+			DrawLine(pos2, { pos1.x, pos2.y }, c, info);
+			DrawLine({ pos1.x, pos2.y }, pos1, c, info);
+		}
+
+		void FillRect(Pos pos1, Pos pos2, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
+		{
+			if (!IsInSide(pos1) && IsInSide(pos2))
+				return;
+
+			if (pos1.x > pos2.x)
+				std::swap(pos1.x, pos2.x);
+			if (pos1.y > pos2.y)
+				std::swap(pos1.y, pos2.y);
+
+			for (uint32_t y = pos1.y; y <= pos2.y; y++)
+				for (uint32_t x = pos1.x; x <= pos2.x; x++)
+					PutPixel({ x, y }, c, info);
+		}
+		void FillRect(Pos pos1, int width, int height, const wchar_t c = 0, const uint16_t info = Color::BG_BRIGHT_WHITE) noexcept
+		{
+			FillRect(pos1, { pos1.x + width, pos1.y + height }, c, info);
 		}
 
 	private:
@@ -227,7 +249,7 @@ namespace pAul {
 
 		bool IsInSide(Pos pos)
 		{
-			return pos.x >= 0 && (uint32_t)pos.x < m_width && pos.y >= 0 && (uint32_t)pos.y < m_height;
+			return pos.x >= 0 && (uint32_t)pos.x < m_width&& pos.y >= 0 && (uint32_t)pos.y < m_height;
 		}
 
 	private:
